@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Results</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; background:#f8fafc; margin:40px;">
+
+<div style="max-width:900px; margin:auto; background:white; padding:25px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+    <h2 style="color:#1f4e79;">Final Regression Equation</h2>
+
+    <div style="background:#eef4fb; padding:15px; font-family:monospace; font-size:16px; border-radius:6px;">
+        {{ equation }}
+    </div>
+
+    <h3>Intercept & Slopes</h3>
+
+    <p>Intercept (b0): <b>{{ intercept }}</b></p>
+
+    {% for name, slope in slopes.items() %}
+        <p>Slope for {{ name }}: <b>{{ slope }}</b></p>
+    {% endfor %}
+
+    <hr style="margin:30px 0;">
+
+    <h3>Enter Sample Data for Prediction</h3>
+
+    <form action="/predict" method="POST">
+
+        <input type="hidden" name="y_name" value="{{ y_name }}">
+        <input type="hidden" name="y_input" value="{{ y_input }}">
+        <input type="hidden" name="x_raw_str" value="{{ x_raw_str }}">
+
+        {% for name in x_names %}
+            <p>
+                <label>Value for <b>{{ name }}</b> (x{{ loop.index }}):</label><br>
+
+                <input
+                    type="number"
+                    step="any"
+                    name="pred_x_{{ loop.index0 }}"
+                    required
+                    style="padding:6px; border:1px solid #ccc; border-radius:4px; width:220px;">
+            </p>
+        {% endfor %}
+
+        <button
+            type="submit"
+            style="padding:8px 18px; background:#2563eb; color:white; border:none; border-radius:5px; cursor:pointer;">
+            Predict {{ y_name }}
+        </button>
+
+    </form>
+
+    <hr style="margin:30px 0;">
+
+    <h3>Visualizations</h3>
+
+    <img
+        src="data:image/png;base64,{{ plot1 }}"
+        alt="Accuracy Plot"
+        style="max-width:100%; border:1px solid #ddd; border-radius:6px;">
+
+    <br><br>
+
+    <img
+        src="data:image/png;base64,{{ plot2 }}"
+        alt="Metrics Plot"
+        style="max-width:100%; border:1px solid #ddd; border-radius:6px;">
+
+    <br><br>
+
+    <a
+        href="/"
+        style="display:inline-block; padding:8px 16px; background:#10b981; color:white; text-decoration:none; border-radius:5px;">
+        Restart Calculator
+    </a>
+
+</div>
+
+</body>
+</html>
